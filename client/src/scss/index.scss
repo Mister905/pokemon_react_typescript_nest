@@ -1,0 +1,387 @@
+@use "../components/Nav/Nav.styles.scss" as Nav;
+@use "../components/Landing/Landing.styles.scss" as Landing;
+@use "../components/Home/Home.styles.scss" as Home;
+@use "../components/PokemonDetail/PokemonDetail.styles.scss" as PokemonDetail;
+@use "../components/Login/Login.styles.scss" as Login;
+@use "../components/Register/Register.styles.scss" as Register;
+@use "../components/GlobalLoading/GlobalLoading.styles.scss" as GlobalLoading;
+@use "../components/Favourites/Favourites.styles.scss" as Favourites;
+@use "../components/Favourites/FavouriteDetail.styles.scss" as FavouriteDetail;
+@use "../components/Notes/Notes.styles.scss" as Notes;
+@use "../components/Modal/Modal.styles.scss" as Modal;
+
+// Import Material Icons font
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+// Ensure Material Icons display properly
+.material-icons {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block !important;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  
+  // Fallback for when font is loading
+  opacity: 1;
+  visibility: visible;
+  
+  // Ensure icons are visible
+  min-width: 1em;
+  min-height: 1em;
+}
+
+// Material Icons sizing
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+// Material Icons colors
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+// Global button alignment fix
+.btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  line-height: 1 !important;
+  
+  .material-icons {
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    
+    // Remove Materialize's default margins
+    &.left {
+      margin-right: 0 !important;
+    }
+    
+    &.right {
+      margin-left: 0 !important;
+    }
+  }
+  
+  span {
+    flex-shrink: 0 !important;
+  }
+}
+
+// Global Button System
+.btn-system {
+  // Base button styles
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  
+  // Icon styling
+  .material-icons {
+    font-size: 1.2rem;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  // Text styling
+  span {
+    flex-shrink: 0;
+  }
+  
+  // Hover effects
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Disabled state
+  &:disabled {
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+    
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+  
+  // Size variants
+  &.btn-small {
+    height: 36px;
+    padding: 8px 16px;
+    font-size: 0.6rem;
+    
+    .material-icons {
+      font-size: 1rem;
+    }
+  }
+  
+  &.btn-large {
+    height: 56px;
+    padding: 16px 32px;
+    font-size: 0.8rem;
+    
+    .material-icons {
+      font-size: 1.4rem;
+    }
+  }
+  
+  // Color variants
+  &.btn-primary {
+    background-color: #1976d2;
+    color: white;
+    
+    &:hover {
+      background-color: #1565c0;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #90caf9;
+      color: #1976d2;
+    }
+  }
+  
+  &.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    
+    &:hover {
+      background-color: #5a6268;
+      box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #ced4da;
+      color: #6c757d;
+    }
+  }
+  
+  &.btn-success {
+    background-color: #28a745;
+    color: white;
+    
+    &:hover {
+      background-color: #218838;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #a8e6cf;
+      color: #28a745;
+    }
+  }
+  
+  &.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    
+    &:hover {
+      background-color: #c82333;
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #f8d7da;
+      color: #dc3545;
+    }
+  }
+  
+  &.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+    
+    &:hover {
+      background-color: #e0a800;
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+  }
+  
+  &.btn-info {
+    background-color: #17a2b8;
+    color: white;
+    
+    &:hover {
+      background-color: #138496;
+      box-shadow: 0 4px 15px rgba(23, 162, 184, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #b8e6f0;
+      color: #17a2b8;
+    }
+  }
+  
+  &.btn-light {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+    
+    &:hover {
+      background-color: #e2e6ea;
+      box-shadow: 0 4px 15px rgba(248, 249, 250, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #ffffff;
+      color: #6c757d;
+      border-color: #ced4da;
+    }
+  }
+  
+  &.btn-dark {
+    background-color: #343a40;
+    color: white;
+    
+    &:hover {
+      background-color: #23272b;
+      box-shadow: 0 4px 15px rgba(52, 58, 64, 0.4);
+    }
+    
+    &:disabled {
+      background-color: #b8c2cc;
+      color: #343a40;
+    }
+  }
+  
+  // Special states
+  &.btn-favourited {
+    background-color: #4caf50 !important;
+    color: white !important;
+    cursor: default !important;
+    
+    &:hover {
+      background-color: #4caf50 !important;
+      transform: none !important;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3) !important;
+    }
+    
+    &:disabled {
+      background-color: #4caf50 !important;
+      color: white !important;
+      opacity: 1 !important;
+    }
+  }
+  
+  &.btn-loading {
+    cursor: wait;
+    
+    .material-icons {
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  // Navigation-specific overrides for proper alignment
+  &.btn-nav {
+    margin: 0 5px;
+    height: 36px !important;
+    line-height: 1 !important;
+    padding: 0 16px !important;
+    font-size: 0.6rem !important;
+    border-radius: 4px !important;
+    transform: none !important; // Remove default transform for nav alignment
+    
+    .material-icons {
+      font-size: 18px !important;
+    }
+    
+    &:hover {
+      transform: translateY(-1px) !important; // Subtle nav hover effect
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+}
+
+// Loading spinner animation
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Global form styling for Formik integration
+textarea, input[type="text"], input[type="email"], input[type="password"] {
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  
+  &.error {
+    border-color: #dc3545 !important;
+    
+    &:focus {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+    }
+  }
+}
+
+// Error message styling for Formik
+.error-text {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  
+  &::before {
+    content: '⚠';
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+}
+
+// Character count styling
+.char-count {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: 500;
+  
+  &.warning {
+    color: #ffc107;
+  }
+  
+  &.danger {
+    color: #dc3545;
+  }
+}
+
+* {
+  font-family: "Press Start 2P", system-ui !important;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: black;
+}

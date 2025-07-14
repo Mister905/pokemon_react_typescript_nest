@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  username   String      @unique
+  password   String
+  name       String?     // Optional display name for users
+  favourites Favourite[]
+}
+
+model Favourite {
+  id          Int      @id @default(autoincrement())
+  pokemonId   Int
+  pokemonName String?
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  notes       Note[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Note {
+  id          Int       @id @default(autoincrement())
+  content     String
+  favouriteId Int
+  favourite   Favourite @relation(fields: [favouriteId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

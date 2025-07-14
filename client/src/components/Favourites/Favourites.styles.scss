@@ -1,0 +1,512 @@
+.favourite-card {
+  margin-bottom: 20px;
+  
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-image {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      
+      .pokemon-sprite {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 20px;
+        transition: transform 0.3s ease;
+      }
+      
+      .favourite-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.8) 0%,
+          rgba(0, 0, 0, 0.6) 50%,
+          transparent 100%
+        );
+        padding: 20px 15px 15px;
+        text-align: center;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 0.9rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        letter-spacing: 1px;
+      }
+    }
+    
+    .card-content {
+      padding: 20px;
+      
+      p {
+        margin: 10px 0;
+        font-size: 1rem;
+        
+        strong {
+          color: #00695c;
+          font-weight: 600;
+        }
+      }
+      
+      .pokemon-types {
+        margin: 15px 0;
+        
+        strong {
+          color: #00695c;
+          font-weight: 600;
+          display: block;
+          margin-bottom: 8px;
+        }
+        
+        .type-badges {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          
+          .type-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+            letter-spacing: 0.5px;
+            
+            &.type-fire { background-color: #e74c3c; }
+            &.type-water { background-color: #3498db; }
+            &.type-grass { background-color: #2ecc71; }
+            &.type-electric { background-color: #f1c40f; color: #2c3e50; }
+            &.type-ice { background-color: #74b9ff; }
+            &.type-fighting { background-color: #e17055; }
+            &.type-poison { background-color: #a29bfe; }
+            &.type-ground { background-color: #d63031; }
+            &.type-flying { background-color: #81ecec; color: #2c3e50; }
+            &.type-psychic { background-color: #fd79a8; }
+            &.type-bug { background-color: #00b894; }
+            &.type-rock { background-color: #636e72; }
+            &.type-ghost { background-color: #6c5ce7; }
+            &.type-dragon { background-color: #e84393; }
+            &.type-dark { background-color: #2d3436; }
+            &.type-steel { background-color: #b2bec3; color: #2c3e50; }
+            &.type-fairy { background-color: #fd79a8; }
+            &.type-normal { background-color: #95a5a6; }
+          }
+        }
+      }
+      
+      .notes-section {
+        margin-top: 15px;
+        
+        p {
+          margin-bottom: 10px;
+          color: #00695c;
+          font-weight: 600;
+        }
+        
+        ul {
+          margin: 0;
+          padding-left: 20px;
+          
+          li {
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+    
+    .card-action {
+      padding: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      
+      .btn {
+        flex: 1;
+        min-width: 120px;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 0.6rem;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .material-icons {
+          font-size: 1rem;
+          margin-right: 6px;
+        }
+        
+        span {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  // Notes within card styling
+  .notes-in-card {
+    margin-top: 0;
+    border-radius: 0 0 12px 12px;
+    box-shadow: none;
+    border-top: 1px solid #e9ecef;
+    
+    .notes-header {
+      border-bottom: 1px solid #e9ecef;
+      
+      h4 {
+        font-size: 0.9rem;
+      }
+    }
+    
+    .add-note-form {
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .note-item {
+      padding: 15px;
+      margin-bottom: 15px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Empty state styling
+.card-panel {
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  
+  .material-icons.large {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+  
+  h5 {
+    margin: 20px 0 15px 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+  }
+  
+  p {
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  .btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    .material-icons {
+      font-size: 1.1rem;
+      margin-right: 8px;
+    }
+    
+    span {
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .favourite-card {
+    .card {
+      .card-image {
+        height: 180px;
+        
+        .favourite-title {
+          font-size: 0.8rem;
+        }
+      }
+      
+      .card-action {
+        flex-direction: column;
+        
+        .btn {
+          min-width: auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+  
+  .card-panel {
+    padding: 20px;
+    
+    .material-icons.large {
+      font-size: 3rem;
+    }
+    
+    h5 {
+      font-size: 1rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Advanced search and filters styling
+.favourites-advanced-search {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  border: 1px solid #e0e0e0;
+  
+  .search-section {
+    margin-bottom: 20px;
+    
+    .input-field {
+      position: relative;
+      
+      .search-input {
+        padding-left: 3rem !important;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        background-color: white;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        
+        &:focus {
+          border-color: #26a69a !important;
+          box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.1) !important;
+          outline: none;
+        }
+        
+        &::placeholder {
+          color: #9e9e9e;
+          font-style: italic;
+        }
+      }
+      
+      label {
+        left: 1rem;
+        color: #9e9e9e;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        &.active {
+          transform: translateY(-140%) scale(0.8);
+          color: #26a69a;
+        }
+        
+        .material-icons {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+  
+  .filter-section {
+    margin-bottom: 20px;
+    
+    h6 {
+      color: #2c3e50;
+      margin: 0 0 10px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .type-filters,
+    .generation-filters,
+    .sort-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      
+      button {
+        transition: all 0.3s ease;
+        
+        &.active {
+          transform: scale(1.05);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+    
+    .type-filter {
+      .type-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: white;
+        
+        &.type-fire { background-color: #e74c3c; }
+        &.type-water { background-color: #3498db; }
+        &.type-grass { background-color: #2ecc71; }
+        &.type-electric { background-color: #f1c40f; color: #2c3e50; }
+        &.type-ice { background-color: #74b9ff; }
+        &.type-fighting { background-color: #e17055; }
+        &.type-poison { background-color: #a29bfe; }
+        &.type-ground { background-color: #d63031; }
+        &.type-flying { background-color: #81ecec; color: #2c3e50; }
+        &.type-psychic { background-color: #fd79a8; }
+        &.type-bug { background-color: #00b894; }
+        &.type-rock { background-color: #636e72; }
+        &.type-ghost { background-color: #6c5ce7; }
+        &.type-dragon { background-color: #e84393; }
+        &.type-dark { background-color: #2d3436; }
+        &.type-steel { background-color: #b2bec3; color: #2c3e50; }
+        &.type-fairy { background-color: #fd79a8; }
+      }
+    }
+    
+    .generation-filter {
+      background-color: #6c757d;
+      color: white;
+      
+      &.active {
+        background-color: #495057;
+      }
+    }
+    
+    .sort-option {
+      background-color: #17a2b8;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      
+      &.active {
+        background-color: #138496;
+      }
+      
+      .material-icons {
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  .filter-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    
+    .results-info {
+      font-size: 0.9rem;
+      
+      span {
+        background: white;
+        padding: 8px 16px;
+        border-radius: 15px;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  }
+}
+
+// Legacy search styling (for backward compatibility)
+.favourites-search {
+  @extend .favourites-advanced-search;
+}
+
+// Enhanced card hover effects for search results
+.favourites-search + .section {
+  .favourite-card {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// Mobile responsive adjustments for search
+@media (max-width: 600px) {
+  .favourites-search {
+    .input-field {
+      .search-input {
+        font-size: 0.9rem;
+        padding-left: 2.5rem !important;
+      }
+      
+      label {
+        font-size: 0.8rem;
+        
+        .material-icons {
+          font-size: 1rem;
+        }
+      }
+      
+      .clear-search {
+        padding: 6px 10px;
+        
+        span {
+          display: none;
+        }
+        
+        .material-icons {
+          font-size: 1rem;
+        }
+      }
+    }
+    
+    .search-results-info {
+      font-size: 0.8rem;
+      
+      span {
+        padding: 6px 12px;
+      }
+    }
+  }
+}
+
+// Animation for search results
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.favourite-card {
+  animation: fadeInUp 0.3s ease;
+}

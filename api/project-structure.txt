@@ -1,0 +1,129 @@
+.
+├── README.md
+├── db.sqlite
+├── dist
+│   ├── app.controller.js
+│   ├── app.controller.js.map
+│   ├── app.module.js
+│   ├── app.module.js.map
+│   ├── app.service.js
+│   ├── app.service.js.map
+│   ├── auth
+│   │   ├── auth.controller.js
+│   │   ├── auth.controller.js.map
+│   │   ├── auth.module.js
+│   │   ├── auth.module.js.map
+│   │   ├── auth.service.js
+│   │   ├── auth.service.js.map
+│   │   └── jwt
+│   │       ├── jwt-auth.guard.js
+│   │       ├── jwt-auth.guard.js.map
+│   │       ├── jwt.strategy.js
+│   │       └── jwt.strategy.js.map
+│   ├── favourites
+│   │   ├── favourites.controller.js
+│   │   ├── favourites.controller.js.map
+│   │   ├── favourites.module.js
+│   │   ├── favourites.module.js.map
+│   │   ├── favourites.service.js
+│   │   └── favourites.service.js.map
+│   ├── main.js
+│   ├── main.js.map
+│   ├── notes
+│   │   ├── notes.controller.js
+│   │   ├── notes.controller.js.map
+│   │   ├── notes.module.js
+│   │   ├── notes.module.js.map
+│   │   ├── notes.service.js
+│   │   └── notes.service.js.map
+│   ├── prisma
+│   │   ├── prisma.module.js
+│   │   ├── prisma.module.js.map
+│   │   ├── prisma.service.js
+│   │   └── prisma.service.js.map
+│   └── users
+│       ├── users.controller.js
+│       ├── users.controller.js.map
+│       ├── users.module.js
+│       ├── users.module.js.map
+│       ├── users.service.js
+│       └── users.service.js.map
+├── eslint.config.mjs
+├── nest-cli.json
+├── package.json
+├── prisma
+│   └── schema.prisma
+├── project-structure.txt
+├── src
+│   ├── app.controller.spec.ts
+│   ├── app.controller.ts
+│   ├── app.module.ts
+│   ├── app.service.ts
+│   ├── auth
+│   │   ├── auth.controller.spec.ts
+│   │   ├── auth.controller.ts
+│   │   ├── auth.module.ts
+│   │   ├── auth.service.spec.ts
+│   │   ├── auth.service.ts
+│   │   └── jwt
+│   │       ├── jwt-auth.guard.ts
+│   │       ├── jwt.service.spec.ts
+│   │       └── jwt.strategy.ts
+│   ├── dev.db
+│   ├── favourites
+│   │   ├── favourites.controller.spec.ts
+│   │   ├── favourites.controller.ts
+│   │   ├── favourites.module.ts
+│   │   ├── favourites.service.spec.ts
+│   │   └── favourites.service.ts
+│   ├── main.ts
+│   ├── notes
+│   │   ├── notes.controller.spec.ts
+│   │   ├── notes.controller.ts
+│   │   ├── notes.module.ts
+│   │   ├── notes.service.spec.ts
+│   │   └── notes.service.ts
+│   ├── prisma
+│   │   ├── generated
+│   │   │   ├── client.d.ts
+│   │   │   ├── client.js
+│   │   │   ├── default.d.ts
+│   │   │   ├── default.js
+│   │   │   ├── edge.d.ts
+│   │   │   ├── edge.js
+│   │   │   ├── index-browser.js
+│   │   │   ├── index.d.ts
+│   │   │   ├── index.js
+│   │   │   ├── libquery_engine-darwin-arm64.dylib.node
+│   │   │   ├── package.json
+│   │   │   ├── runtime
+│   │   │   │   ├── edge-esm.js
+│   │   │   │   ├── edge.js
+│   │   │   │   ├── index-browser.d.ts
+│   │   │   │   ├── index-browser.js
+│   │   │   │   ├── library.d.ts
+│   │   │   │   ├── library.js
+│   │   │   │   ├── react-native.js
+│   │   │   │   ├── wasm-compiler-edge.js
+│   │   │   │   └── wasm-engine-edge.js
+│   │   │   ├── schema.prisma
+│   │   │   ├── wasm.d.ts
+│   │   │   └── wasm.js
+│   │   ├── prisma.module.ts
+│   │   └── prisma.service.ts
+│   └── users
+│       ├── users.controller.spec.ts
+│       ├── users.controller.ts
+│       ├── users.module.ts
+│       ├── users.service.spec.ts
+│       └── users.service.ts
+├── test
+│   ├── app.e2e-spec.ts
+│   └── jest-e2e.json
+├── tsconfig.build.json
+├── tsconfig.build.tsbuildinfo
+├── tsconfig.json
+├── tsconfig.tsbuildinfo
+└── yarn.lock
+
+19 directories, 108 files

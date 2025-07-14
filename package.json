@@ -1,0 +1,38 @@
+{
+  "name": "pokemon-react-typescript-nest",
+  "version": "1.0.0",
+  "description": "Pokemon application with React TypeScript frontend and NestJS backend",
+  "private": true,
+  "workspaces": [
+    "client",
+    "api"
+  ],
+  "scripts": {
+    "dev": "concurrently \"yarn dev:api\" \"yarn dev:client\"",
+    "dev:api": "cd api && yarn start:dev",
+    "dev:client": "cd client && yarn dev",
+    "build": "yarn build:api && yarn build:client",
+    "build:api": "cd api && yarn build",
+    "build:client": "cd client && yarn build",
+    "install:all": "yarn install && cd api && yarn install && cd ../client && yarn install",
+    "clean": "yarn clean:api && yarn clean:client",
+    "clean:api": "cd api && rm -rf dist node_modules",
+    "clean:client": "cd client && rm -rf dist node_modules",
+    "start": "concurrently \"yarn start:api\" \"yarn start:client\"",
+    "start:api": "cd api && yarn start",
+    "start:client": "cd client && yarn preview",
+    "test": "yarn test:api && yarn test:client",
+    "test:api": "cd api && yarn test",
+    "test:client": "cd client && yarn test",
+    "lint": "yarn lint:api && yarn lint:client",
+    "lint:api": "cd api && yarn lint",
+    "lint:client": "cd client && yarn lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=1.22.0"
+  }
+}

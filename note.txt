@@ -1,0 +1,165 @@
+yarn create vite
+
+"client"
+
+React => Typescript
+
+cd client
+
+yarn install
+
+yarn dev
+
+yarn add axios react-router-dom redux react-redux redux-thunk formik yup materialize-css@next sass @reduxjs/toolkit
+
+touch client/src/hooks.ts
+
+touch client/src/store.ts
+
+nest new api
+
+yarn add sqlite3 class-validator class-transformer
+
+yarn add class-validator class-transformer
+
+yarn add @nestjs/passport @nestjs/jwt passport passport-jwt passport-local bcrypt
+
+yarn add -D @types/passport-jwt @types/passport-local @types/bcrypt
+
+What these do:
+
+    @nestjs/passport → Passport integration with NestJS.
+
+    passport-local → Strategy for username/password login.
+
+    passport-jwt → Strategy for JWT validation.
+
+    bcrypt → Secure password hashing.
+
+    Type definitions (-D) for TypeScript support.
+
+
+yarn nest g module users
+yarn nest g service users
+yarn nest g controller users
+
+yarn nest g module auth
+yarn nest g service auth
+yarn nest g controller auth
+
+yarn nest g service auth/jwt
+
+
+
+yarn add prisma --dev
+yarn add @prisma/client
+yarn prisma init
+
+Set database URL in .env inside the NestJS app root
+
+DATABASE_URL="file:./dev.db"
+
+Replace the default Prisma example for a PostgreSQL connection, not SQLite. For your NestJS + SQLite setup, you should replace it entirely with a proper SQLite URL.
+
+
+Open prisma/schema.prisma -> Change it to SQLite
+
+
+Create prisma.service.ts
+
+This allows you to inject PrismaService into controllers to query your SQLite database.
+
+
+Register PrismaService
+
+In src/app.module.ts
+
+
+
+Implement API Endpoints
+3.1 Favorites Endpoints
+
+Generate module, controller, and service
+
+yarn nest g module favourites
+yarn nest g service favourites
+yarn nest g controller favourites
+
+
+nest g module notes
+nest g controller notes
+nest g service notes
+
+
+
+Prisma include is used to fetch nested data
+
+
+Prisma reduces boilerplate, gives you full TypeScript safety, makes relations and queries easier to reason about, and improves developer productivity.
+
+PrismaService is injected wherever needed.
+
+Each module contains its service + controller.
+
+Controllers use services to interact with the database via Prisma.
+
+
+Clean separation: Users, Favourites, Notes each have their own module.
+
+All database access is centralized via PrismaService — no TypeORM repositories needed.
+
+Adding JWT auth is straightforward — just use @UseGuards(JwtAuthGuard) on the controllers.
+
+Easier to extend later: e.g., add search/filter endpoints or connect notes to more models.
+
+
+
+npx prisma migrate dev --name init
+npx prisma generate
+
+
+
+Create Prisma Service
+
+File: src/prisma/prisma.service.ts
+
+
+extends PrismaClient gives full access to your generated Prisma client (this.user, this.favourite, this.note etc.).
+
+OnModuleInit and OnModuleDestroy ensure Prisma connects/disconnects with the Nest lifecycle.
+
+
+
+When you add @UseGuards(JwtAuthGuard) to a controller route, Passport automatically:
+
+Extracts the JWT from Authorization: Bearer <token> header
+
+Validates it using JwtStrategy
+
+Attaches the returned user object to req.user
+
+No extra code is needed — you now have fully functional JWT protection for any endpoint.
+
+
+yarn add reflect-metadata
+
+
+
+✅ Benefits of this approach
+
+Users cannot see or manipulate others' favourites or notes.
+
+Keeps your API secure while still being simple to use from React.
+
+Works well with Prisma’s relational queries, including embedded notes.
+
+
+yarn prisma generate
+
+    This will create the folder generated/prisma with the Prisma client.
+
+
+
+If after these steps TS still complains, the next step is to delete node_modules and .prisma folders, reinstall and regenerate:
+
+sometimes TypeScript caches old Prisma types, so even if your schema is correct, it still thinks notes doesn’t exist. Deleting node_modules and .prisma and regenerating the client forces it to refresh everything.

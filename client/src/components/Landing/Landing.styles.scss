@@ -1,0 +1,43 @@
+// Landing component styles
+.pikachu-landing-section {
+  background-image: url(../../assets/images/pikachu.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #0021a5;
+}
+
+.venusaur-landing-section {
+  background-color: #0077c2;
+  background-image: url(../../assets/images/venusaur.png);
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+
+.h1-text-shadow {
+  text-shadow: 2px 2px 4px #000;
+  font-size: 4rem;
+}
+
+.p-text-shadow {
+  text-shadow: 1px 1px 3px #000;
+  font-size: 1.5rem;
+}
+
+.mewtwo-landing-section {
+  background-color: #ffea00;
+  background-image: url(../../assets/images/mewtwo.png);
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: top left;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
