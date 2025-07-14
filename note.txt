@@ -1,0 +1,17 @@
+yarn create vite
+
+"client"
+
+React => Typescript
+
+cd client
+
+yarn install
+
+yarn dev
+
+yarn add axios react-router-dom redux react-redux redux-thunk formik yup materialize-css@next sass @reduxjs/toolkit
+
+touch client/src/hooks.ts
+
+touch client/src/store.ts
