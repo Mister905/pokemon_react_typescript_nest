@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Step-by-Step Implementation Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #81c784;
+            font-size: 1.4rem;
+            margin: 20px 0 15px 0;
+        }
+
+        .step {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid #00d4ff;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .step h4 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .step-number {
+            background: #00d4ff;
+            color: #0f0f23;
+            padding: 8px 12px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+            display: inline-block;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #d4d4d4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            white-space: pre;
+            word-wrap: normal;
+        }
+
+        .code-block::before {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+            margin-bottom: 15px;
+        }
+
+        .explanation {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .explanation h5 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid #ff9800;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning h5 {
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ffc107;
+        }
+
+        .checklist {
+            background: rgba(156, 39, 176, 0.1);
+            border-left: 4px solid #9c27b0;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .checklist h5 {
+            color: #9c27b0;
+            margin-bottom: 10px;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+        }
+
+        .file-structure {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #d4d4d4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            white-space: pre;
+            word-wrap: normal;
+        }
+
+        .file-structure::before {
+            content: '📁 File Structure';
+            display: block;
+            color: #00d4ff;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-output {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            color: #00ff00;
+            white-space: pre;
+            word-wrap: normal;
+        }
+
+        .terminal-output::before {
+            content: '💻 Terminal Output';
+            display: block;
+            color: #00d4ff;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐳 Docker Step-by-Step Implementation</h1>
+            <p>Complete Guide to Containerizing React + API Applications</p>
+        </div>
+
+        <div class="section">
+            <h2>📋 Prerequisites Checklist</h2>
+            
+            <div class="checklist">
+                <h5>Before You Start</h5>
+                <ul>
+                    <li>Docker Desktop installed and running</li>
+                    <li>Pokemon app project cloned locally</li>
+                    <li>Terminal/Command prompt ready</li>
+                    <li>Basic understanding of Docker concepts</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h5>⚠️ Important Notes</h5>
+                <p>This guide works for any React + API project structure with separate client and api directories. The examples use a Pokemon app, but the patterns apply to any similar project.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Phase 1: Docker Desktop Setup</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">1</span>Install Docker Desktop</h4>
+                
+                <div class="explanation">
+                    <h5>📥 Download & Install</h5>
+                    <p>Download Docker Desktop from the official website and install it on your system.</p>
+                </div>
+
+                <div class="code-block">
+# macOS (using Homebrew)
+brew install --cask docker
+
+# Or download from: https://www.docker.com/products/docker-desktop/
+                </div>
+
+                <div class="explanation">
+                    <h5>🔧 Post-Installation</h5>
+                    <p>Launch Docker Desktop and wait for it to start completely. You'll see the Docker whale icon in your system tray.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">2</span>Verify Docker Installation</h4>
+                
+                <div class="code-block">
+# Check Docker version
+docker --version
+
+# Check Docker Compose version
+docker-compose --version
+
+# Test Docker is working
+docker run hello-world
+                </div>
+
+                <div class="terminal-output">
+Docker version 24.0.7, build afdd53b
+Docker Compose version v2.21.0
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ Phase 2: Project Structure Setup</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">3</span>Navigate to Your Project</h4>
+                
+                <div class="code-block">
+# Navigate to your project directory
+cd /path/to/your/project
+
+# Verify you're in the right directory
+pwd
+ls -la
+                </div>
+
+                <div class="terminal-output">
+/path/to/your/project
+total 16
+drwxr-xr-x  8 user  staff  256 Sep  2 19:30 .
+drwxr-xr-x  3 user  staff   96 Sep  2 19:30 ..
+drwxr-xr-x  8 user  staff  256 Sep  2 19:30 api
+drwxr-xr-x  8 user  staff  256 Sep  2 19:30 client
+-rw-r--r--  1 user  staff  123 Sep  2 19:30 package.json
+-rw-r--r--  1 user  staff  456 Sep  2 19:30 README.md
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">4</span>Create Root .dockerignore</h4>
+                
+                <div class="code-block">
+# Create .dockerignore in root directory
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage
+dist
+build
+*.log
+.DS_Store
+Thumbs.db
+EOF
+                </div>
+
+                <div class="explanation">
+                    <h5>📝 What This Does</h5>
+                    <p>The .dockerignore file tells Docker which files and directories to exclude when building the Docker context. This makes builds faster and more secure.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Phase 3: Backend Dockerfile Creation</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">5</span>Create API Dockerfile</h4>
+                
+                <div class="code-block">
+# Navigate to API directory
+cd api
+
+# Create Dockerfile for the backend
+cat > Dockerfile << 'EOF'
+# Use latest LTS Node.js version
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first (for better caching)
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Install dependencies
+RUN yarn install
+
+# Copy source code
+COPY . .
+
+# Generate Prisma client (if using Prisma)
+RUN npx prisma generate
+
+# Build the application
+RUN yarn build
+
+# Expose port
+EXPOSE 3000
+
+# Start the application
+CMD ["yarn", "start:prod"]
+EOF
+                </div>
+
+                <div class="explanation">
+                    <h5>🔍 Key Points</h5>
+                    <ul>
+                        <li><strong>Node.js 18:</strong> Latest LTS version with best compatibility</li>
+                        <li><strong>Latest dependencies:</strong> Use current stable versions</li>
+                        <li><strong>Multi-stage approach:</strong> Copy package files first for better caching</li>
+                        <li><strong>Prisma support:</strong> Includes Prisma client generation if needed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">6</span>Create API .dockerignore</h4>
+                
+                <div class="code-block">
+# Create .dockerignore for API
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage
+dist
+build
+*.log
+.DS_Store
+Thumbs.db
+EOF
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Phase 4: Frontend Dockerfile Creation</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">7</span>Create Client Dockerfile</h4>
+                
+                <div class="code-block">
+# Navigate to client directory
+cd ../client
+
+# Create Dockerfile for the frontend
+cat > Dockerfile << 'EOF'
+# Build stage
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first (for better caching)
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Install dependencies
+RUN yarn install
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN yarn build
+
+# Production stage
+FROM nginx:alpine
+
+# Copy built files from the build stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
+EOF
+                </div>
+
+                <div class="explanation">
+                    <h5>🔍 Key Points</h5>
+                    <ul>
+                        <li><strong>Multi-stage build:</strong> Builds with Node.js, serves with Nginx</li>
+                        <li><strong>Latest versions:</strong> Use current stable Node.js and dependencies</li>
+                        <li><strong>Nginx serving:</strong> Efficient static file serving</li>
+                        <li><strong>Port 80:</strong> Standard HTTP port</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">8</span>Create Client Nginx Configuration</h4>
+                
+                <div class="code-block">
+# Create nginx configuration for the client
+cat > nginx.conf << 'EOF'
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Handle client-side routing
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+}
+EOF
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">9</span>Create Client .dockerignore</h4>
+                
+                <div class="code-block">
+# Create .dockerignore for client
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage
+dist
+build
+*.log
+.DS_Store
+Thumbs.db
+EOF
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🐳 Phase 5: Docker Compose Configuration</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">10</span>Create Development Docker Compose</h4>
+                
+                <div class="code-block">
+# Navigate back to root directory
+cd ..
+
+# Create development docker-compose.yml
+cat > docker-compose.yml << 'EOF'
+version: '3.8'
+
+services:
+  # NestJS Backend API
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=file:./dev.db
+    volumes:
+      - api_data:/app/dev.db
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # React Frontend
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api_data:
+EOF
+                </div>
+
+                <div class="explanation">
+                    <h5>🔍 Key Features</h5>
+                    <ul>
+                        <li><strong>Health checks:</strong> Ensures API is ready before starting frontend</li>
+                        <li><strong>Volume persistence:</strong> Database data survives container restarts</li>
+                        <li><strong>Port mapping:</strong> Frontend on 5173, API on 3000</li>
+                        <li><strong>Service dependencies:</strong> Frontend waits for API to be healthy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">11</span>Create Production Docker Compose</h4>
+                
+                <div class="code-block">
+# Create production docker-compose.yml
+cat > docker-compose.prod.yml << 'EOF'
+version: '3.8'
+
+services:
+  # NestJS Backend API
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./dev.db
+    volumes:
+      - api_data:/app/dev.db
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # React Frontend
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+      - client
+    profiles:
+      - production
+
+volumes:
+  api_data:
+EOF
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🌐 Phase 6: Nginx Reverse Proxy Setup</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">12</span>Create Nginx Directory and Configuration</h4>
+                
+                <div class="code-block">
+# Create nginx directory
+mkdir -p nginx
+
+# Create main nginx configuration
+cat > nginx/nginx.conf << 'EOF'
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream api {
+        server api:3000;
+    }
+
+    upstream client {
+        server client:80;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        # Frontend
+        location / {
+            proxy_pass http://client;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # API
+        location /api {
+            proxy_pass http://api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+EOF
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">13</span>Create Nginx Default Configuration</h4>
+                
+                <div class="code-block">
+# Create default nginx configuration
+cat > nginx/default.conf << 'EOF'
+server {
+    listen 80;
+    server_name localhost;
+
+    # Frontend
+    location / {
+        proxy_pass http://client:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # API
+    location /api {
+        proxy_pass http://api:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+EOF
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📜 Phase 7: Deployment Scripts</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">14</span>Create Scripts Directory and Deployment Script</h4>
+                
+                <div class="code-block">
+# Create scripts directory
+mkdir -p scripts
+
+# Create deployment script
+cat > scripts/docker-deploy.sh << 'EOF'
+#!/bin/bash
+
+echo "🐳 Deploying Pokemon App with Docker..."
+
+# Build and start services
+echo "📦 Building Docker images..."
+docker-compose build
+
+echo "🚀 Starting services..."
+docker-compose up -d
+
+echo "⏳ Waiting for services to be ready..."
+sleep 10
+
+echo "🔍 Checking service status..."
+docker-compose ps
+
+echo "📋 Service URLs:"
+echo "  Frontend: http://localhost:5173"
+echo "  API: http://localhost:3000"
+echo "  Nginx (if enabled): http://localhost:80"
+
+echo "✅ Deployment complete!"
+echo "📊 View logs with: docker-compose logs -f"
+echo "🛑 Stop services with: docker-compose down"
+EOF
+
+# Make script executable
+chmod +x scripts/docker-deploy.sh
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">15</span>Create Development Script</h4>
+                
+                <div class="code-block">
+# Create development script
+cat > scripts/dev.sh << 'EOF'
+#!/bin/bash
+
+echo "🐳 Starting development environment..."
+
+# Start development services
+docker-compose up --build
+
+# Access URLs:
+# Frontend: http://localhost:5173
+# API: http://localhost:3000
+# API Docs: http://localhost:3000/api
+EOF
+
+# Make script executable
+chmod +x scripts/dev.sh
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 Phase 8: Testing the Setup</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">16</span>Build and Test Docker Images</h4>
+                
+                <div class="code-block">
+# Test building the API image
+docker build -t myapp-api ./api
+
+# Test building the client image
+docker build -t myapp-client ./client
+
+# Check if images were created successfully
+docker images | grep myapp
+                </div>
+
+                <div class="terminal-output">
+REPOSITORY       TAG       IMAGE ID       CREATED         SIZE
+myapp-api        latest    abc123def456   2 minutes ago   245MB
+myapp-client     latest    def456ghi789   2 minutes ago   45MB
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">17</span>Start Development Environment</h4>
+                
+                <div class="code-block">
+# Start the development environment
+docker-compose up --build
+                </div>
+
+                <div class="terminal-output">
+[+] Building 45.2s (15/15) FINISHED
+ => [api internal] load build definition from Dockerfile
+ => [client internal] load build definition from Dockerfile
+ => [api 1/8] FROM docker.io/library/node:18-alpine
+ => [client 1/6] FROM docker.io/library/node:18-alpine
+ => [api 2/8] WORKDIR /app
+ => [client 2/6] WORKDIR /app
+ => [api 3/8] COPY package*.json ./
+ => [client 3/6] COPY package*.json ./
+ => [api 4/8] COPY yarn.lock ./
+ => [client 4/6] COPY yarn.lock ./
+ => [api 5/8] RUN yarn install
+ => [client 5/6] RUN yarn install
+ => [api 6/8] COPY . .
+ => [client 6/6] COPY . .
+ => [api 7/8] RUN npx prisma generate
+ => [client 7/6] RUN yarn build
+ => [api 8/8] RUN yarn build
+ => [client 8/6] FROM docker.io/library/nginx:alpine
+ => [client 9/6] COPY --from=builder /app/dist /usr/share/nginx/html
+ => [client 10/6] COPY nginx.conf /etc/nginx/conf.d/default.conf
+ => [client 11/6] EXPOSE 80
+ => [client 12/6] CMD ["nginx", "-g", "daemon off;"]
+
+[+] Running 2/2
+ ✔ Container myapp-api-1    Started
+ ✔ Container myapp-client-1 Started
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">18</span>Verify Services Are Running</h4>
+                
+                <div class="code-block">
+# Check running containers
+docker-compose ps
+
+# View logs
+docker-compose logs -f
+
+# Test API endpoint
+curl http://localhost:3000/api
+
+# Test frontend
+curl http://localhost:5173
+                </div>
+
+                <div class="terminal-output">
+NAME                     COMMAND                  SERVICE             STATUS              PORTS
+myapp-api-1              "yarn start:prod"        api                 Up 2 minutes        0.0.0.0:3000->3000/tcp
+myapp-client-1           "nginx -g 'daemon of…"   client              Up 2 minutes        0.0.0.0:5173->80/tcp
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Phase 9: Production Deployment</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">19</span>Test Production Build</h4>
+                
+                <div class="code-block">
+# Test production build locally
+docker-compose -f docker-compose.prod.yml up --build
+
+# Or use the deployment script
+./scripts/docker-deploy.sh
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">20</span>Deploy to AWS EC2</h4>
+                
+                <div class="code-block">
+# SSH into your EC2 instance
+ssh -i your-key.pem ec2-user@your-ec2-ip
+
+# Navigate to project directory
+cd /home/ec2-user/your-project
+
+# Pull latest changes
+git pull origin main
+
+# Deploy with Docker
+docker-compose -f docker-compose.prod.yml up -d
+
+# Or use deployment script
+./scripts/docker-deploy.sh
+                </div>
+
+                <div class="explanation">
+                    <h5>🌐 Access Your Application</h5>
+                    <ul>
+                        <li><strong>Frontend:</strong> http://your-ec2-ip:5173</li>
+                        <li><strong>API:</strong> http://your-ec2-ip:3000</li>
+                        <li><strong>With Nginx:</strong> http://your-ec2-ip:80</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Phase 10: Daily Development Commands</h2>
+            
+            <div class="step">
+                <h4><span class="step-number">21</span>Common Development Commands</h4>
+                
+                <div class="code-block">
+# Start development environment
+docker-compose up --build
+
+# Start in background
+docker-compose up -d
+
+# View logs for all services
+docker-compose logs -f
+
+# View logs for specific service
+docker-compose logs -f api
+docker-compose logs -f client
+
+# Restart specific service
+docker-compose restart api
+docker-compose restart client
+
+# Access container shells
+docker-compose exec api sh
+docker-compose exec client sh
+
+# Stop everything
+docker-compose down
+
+# Clean up (removes volumes and images)
+docker-compose down -v
+docker system prune -a
+                </div>
+            </div>
+
+            <div class="step">
+                <h4><span class="step-number">22</span>Production Management Commands</h4>
+                
+                <div class="code-block">
+# Deploy to production
+docker-compose -f docker-compose.prod.yml up -d
+
+# Update deployment
+git pull
+docker-compose -f docker-compose.prod.yml up --build -d
+
+# Scale services
+docker-compose -f docker-compose.prod.yml up -d --scale api=3
+
+# Check status
+docker-compose -f docker-compose.prod.yml ps
+
+# View production logs
+docker-compose -f docker-compose.prod.yml logs -f
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Final Project Structure</h2>
+            
+            <div class="file-structure">
+your-project/
+├── docker-compose.yml              # Development orchestration
+├── docker-compose.prod.yml         # Production configuration
+├── .dockerignore                   # Docker context exclusions
+├── README.md                       # Project documentation
+├── api/                            # Backend API
+│   ├── Dockerfile                  # Backend container (Node.js 18)
+│   ├── .dockerignore
+│   ├── src/
+│   │   ├── features/               # Feature modules
+│   │   ├── main.ts                 # Application entry point
+│   │   └── prisma/                 # Database schema (if using Prisma)
+│   ├── package.json                # Backend dependencies
+│   └── yarn.lock
+├── client/                         # React Frontend
+│   ├── Dockerfile                  # Frontend container (Node.js 18 + Nginx)
+│   ├── .dockerignore
+│   ├── nginx.conf                  # Nginx configuration for serving
+│   ├── src/
+│   │   ├── components/             # React components
+│   │   ├── features/               # State management
+│   │   ├── store/                  # Store configuration
+│   │   ├── styles/                 # Stylesheets
+│   │   └── main.tsx                # React entry point
+│   ├── package.json                # Frontend dependencies
+│   └── yarn.lock
+├── nginx/                          # Reverse proxy configuration
+│   ├── nginx.conf
+│   └── default.conf
+└── scripts/
+    ├── docker-deploy.sh            # Automated deployment script
+    └── dev.sh                      # Development scripts
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Success Checklist</h2>
+            
+            <div class="checklist">
+                <h5>✅ Implementation Complete</h5>
+                <ul>
+                    <li>Docker Desktop installed and running</li>
+                    <li>All Dockerfiles created with correct versions</li>
+                    <li>Docker Compose files configured</li>
+                    <li>Nginx reverse proxy setup</li>
+                    <li>Deployment scripts created and executable</li>
+                    <li>Local development environment working</li>
+                    <li>Production build tested</li>
+                    <li>Deployment to AWS EC2 successful</li>
+                </ul>
+            </div>
+
+            <div class="success">
+                <h3>🎉 Congratulations!</h3>
+                <p>You've successfully containerized your application! You now have:</p>
+                <ul>
+                    <li>✅ <strong>Consistent development environment</strong> - Same setup everywhere</li>
+                    <li>✅ <strong>Fast deployments</strong> - No more environment setup issues</li>
+                    <li>✅ <strong>Production-ready configuration</strong> - Ready for scaling</li>
+                    <li>✅ <strong>Easy team collaboration</strong> - Anyone can run with one command</li>
+                    <li>✅ <strong>Future-proof setup</strong> - Ready for CI/CD and cloud deployment</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
